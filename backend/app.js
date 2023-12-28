@@ -4,8 +4,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const cloudinary = require("cloudinary").v2; // Make sure to use the v2 version
-
+const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -13,25 +12,20 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// Enable CORS for all routes
 app.use(cors({
-  origin: ['https://mernstack-ngav.vercel.app',],
+  origin: ['https://mernstack-ngav.vercel.app'],
   credentials: true
 }));
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+
+// Your routes
 app.use("/test", (req, res) => {
   res.send("Hello world!");
 });
-
-app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
-
-// config
-if (process.env.NODE_ENV !== "PRODUCTION") {
-  require("dotenv").config({
-    path: "config/.env",
-  });
-}
 
 // import routes
 const user = require("./controller/user");
@@ -56,7 +50,7 @@ app.use("/api/v2/coupon", coupon);
 app.use("/api/v2/payment", payment);
 app.use("/api/v2/withdraw", withdraw);
 
-// it's for ErrorHandling
+// Error handling middleware
 app.use(ErrorHandler);
 
 module.exports = app;
