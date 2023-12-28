@@ -14,7 +14,7 @@ cloudinary.config({
 });
 
 app.use(cors({
-  origin: ['http://localhost:3000',],
+  origin: ['https://mernstack-ngav.vercel.app',],
   credentials: true
 }));
 
